@@ -18,4 +18,5 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 	List<Order> findByOrderDateBetween(Date startDate,Date endDate);
 	List<Order> findByPrice(int price);
 	List<Order> findByPriceLessThanEqual(int price);
+	List<Order> findByCategoryId(Long categoryId);
 }

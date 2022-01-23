@@ -34,8 +34,8 @@ public class UserService extends ClientService{
 	
 	public UserService(CategoryRepository categoryRepository, OrderRepository orderRepository,
 			PaymentRepository paymentRepository, ProductRepository productRepository,
-			ShipmentRepository shipmentRepository) {
-		super(categoryRepository, orderRepository, paymentRepository, productRepository, shipmentRepository);
+			ShipmentRepository shipmentRepository, UserRepository userRepository) {
+		super(categoryRepository, orderRepository, paymentRepository, productRepository, shipmentRepository, userRepository);
 		
 	}
 	public boolean login(String email, String password) throws ServiceException {

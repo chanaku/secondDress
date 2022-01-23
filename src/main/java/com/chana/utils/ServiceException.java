@@ -1,6 +1,6 @@
 package com.chana.utils;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 public class ServiceException extends Exception {
 

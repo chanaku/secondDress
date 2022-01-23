@@ -22,4 +22,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 	
 	List<Product> findByName(String name);
 	List<Product> findBySellerFirstNameOrSellerLastName(String firstName, String lastName);
+	boolean existsByTitle(String title);
+	boolean existsByName(String name);
 }
