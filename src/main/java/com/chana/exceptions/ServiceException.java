@@ -1,4 +1,4 @@
-package com.chana.utils;
+package com.chana.exceptions;
 
 
 

@@ -1,6 +1,7 @@
 package com.chana.beans;
 
 import java.sql.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+
+
 @Entity
 @Table(name= "orders")
 public class Order {
@@ -25,12 +28,12 @@ public class Order {
 	private User seller;
 	@ManyToOne
 	@JoinColumn(name="buyer_id")
-	private User buyer;
+	private long buyerId;
 	@ManyToMany
 	@JoinColumn(name = "product_id")
 	private Product product;
 	@Column(name="total_price")
-	private long totalPrice;
+	private double totalPrice;
 	@OneToOne
 	@JoinColumn(name="payment_id")
 	private Payment payment;
@@ -46,12 +49,11 @@ public class Order {
 	
 	
 	
-	public Order(long id, User seller, User buyer, Product product, long totalPrice, Payment payment,
+	public Order(long id, User seller, long buyerId, Product product, long totalPrice, Payment payment,
 			boolean isPackageRecieved, boolean isComplete, Date orderDate, Shipment shipment) {
-		super();
 		this.id = id;
 		this.seller = seller;
-		this.buyer = buyer;
+		this.buyerId = buyerId;
 		this.product = product;
 		this.totalPrice = totalPrice;
 		this.payment = payment;
@@ -60,6 +62,20 @@ public class Order {
 		this.orderDate = orderDate;
 		this.shipment = shipment;
 	}
+	
+	public Order(User seller, long buyerId, Product product, double totalPrice, Payment payment, boolean isPackageRecieved,
+			boolean isComplete, Date orderDate, Shipment shipment) {
+		this.seller = seller;
+		this.buyerId = buyerId;
+		this.product = product;
+		this.totalPrice = totalPrice;
+		this.payment = payment;
+		this.isPackageRecieved = isPackageRecieved;
+		this.isComplete = isComplete;
+		this.orderDate = orderDate;
+		this.shipment = shipment;
+	}
+
 	public Order() {}
 	public long getId() {
 		return id;
@@ -73,11 +89,11 @@ public class Order {
 	public void setSeller(User seller) {
 		this.seller = seller;
 	}
-	public User getBuyer() {
-		return buyer;
+	public long getBuyer() {
+		return buyerId;
 	}
 	public void setBuyer(User buyer) {
-		this.buyer = buyer;
+		this.buyerId = buyerId;
 	}
 	public Product getProduct() {
 		return product;
@@ -85,7 +101,7 @@ public class Order {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	public long getTotalPrice() {
+	public double getTotalPrice() {
 		return totalPrice;
 	}
 	public void setTotalPrice(long totalPrice) {
@@ -125,7 +141,7 @@ public class Order {
 	}
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", seller=" + seller + ", buyer=" + buyer + ", product=" + product + ", totalPrice="
+		return "Order [id=" + id + ", seller=" + seller + ", buyer=" + buyerId + ", product=" + product + ", totalPrice="
 				+ totalPrice + ", payment=" + payment + ", isPackageRecieved=" + isPackageRecieved + ", isComplete="
 				+ isComplete + "]";
 	}

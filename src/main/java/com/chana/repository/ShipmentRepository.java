@@ -11,7 +11,7 @@ import com.chana.beans.Shipment;
 public interface ShipmentRepository extends JpaRepository<Shipment, Long>{
 	List<Shipment> findBySellerId(Long id);
 	List<Shipment> findByBuyerId(Long buyerId);
-	Shipment findByTrackingNumber(int trackingNumber);
+	Shipment findByTrackingNumber(String track);
 	List<Shipment> findByArriveDate(Date arriveDate);
 	List<Shipment> findByShipmentDate(Date shipmentDate);
 	List<Shipment> findByShipmentCompany(String shipmentCompany);

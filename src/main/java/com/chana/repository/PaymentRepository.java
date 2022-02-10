@@ -11,7 +11,7 @@ import com.chana.beans.Payment;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long>{
 	
-	Payment findByUserId(long id);
+	List<Payment> findByUserId(long id);
 	List<Payment> findBypaymentDateLessThanEqual(Date date);
 	List<Payment> findBypaymentDateBetween(Date fromDate, Date toDate);
 }

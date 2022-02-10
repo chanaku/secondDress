@@ -14,7 +14,7 @@ public class LoginManager {
 	@Autowired
 	private ApplicationContext context;
 	public ClientService login(String email, String password, ClientType clientType) {
-		ClientService clientService=null;
+		ClientService clientService=new ClientService();
 		
 		switch(clientType) {
 		case ADMINISTRATOR:

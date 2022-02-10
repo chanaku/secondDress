@@ -30,9 +30,10 @@ public class Product {
 	private String size;
 	private String color;
 	private String material;
+	private int amount;
 
 	public Product(long id, String title, String description, Category category, double price, User seller, String size,
-			String color, String material) {
+			String color, String material, int amount) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -42,6 +43,7 @@ public class Product {
 		this.size = size;
 		this.color = color;
 		this.material = material;
+		this.amount=amount;
 	}
 
 	public Product() {
@@ -118,12 +120,23 @@ public class Product {
 	public void setMaterial(String material) {
 		this.material = material;
 	}
+	
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
 
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", title=" + title + ", description=" + description + ", category=" + category
 				+ ", price=" + price + ", seller=" + seller + ", size=" + size + ", color=" + color + ", material="
-				+ material + "]";
+				+ material + ", amount=" + amount + "]";
 	}
+
+	
 
 }

@@ -24,4 +24,10 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 	List<Product> findBySellerFirstNameOrSellerLastName(String firstName, String lastName);
 	boolean existsByTitle(String title);
 	boolean existsByName(String name);
+	boolean existsByIdAndAmountEquals(long id, double zero);
+	
+	@Transactional
+	@Modifying
+	@Query(value = "update products set amount= amount-1 where id=?", nativeQuery = true)
+	void updateProductQuantity(long l);
 }
