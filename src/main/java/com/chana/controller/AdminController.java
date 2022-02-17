@@ -2,6 +2,8 @@ package com.chana.controller;
 
 import java.sql.Date;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,22 +25,40 @@ import com.chana.beans.ProductList;
 import com.chana.beans.ShipmentList;
 import com.chana.beans.User;
 import com.chana.beans.UserList;
+import com.chana.exceptions.LoginException;
 import com.chana.exceptions.productExceptions.AddProductException;
 import com.chana.exceptions.productExceptions.DeleteProductException;
 import com.chana.exceptions.productExceptions.ProductDoesntExistsException;
 import com.chana.exceptions.productExceptions.UpdateProductException;
+import com.chana.login.LoginRequest;
+import com.chana.login.TokenManager;
 import com.chana.services.AdminService;
+import com.chana.utils.ClientType;
+import com.chana.utils.LoginManager;
 
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+	@Autowired
 	private AdminService adminService;
+	@Autowired
+	private LoginManager loginManager;
+	@Autowired
+	private TokenManager tokenManager;
 
 	@Autowired
 	public AdminController(AdminService adminService) {
 		this.adminService = adminService;
 	}
+	
+	@PostMapping
+	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) throws LoginException{
+		loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), ClientType.ADMINISTRATOR);
+		String token = tokenManager.generageToken(ClientType.ADMINISTRATOR);
+		return new ResponseEntity<>(token, HttpStatus.ACCEPTED);
+	}
 
+	
 	// add product
 	@PostMapping
 	public ResponseEntity<?> addProduct(@RequestBody Product product) {

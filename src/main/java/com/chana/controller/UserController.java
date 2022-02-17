@@ -1,5 +1,7 @@
 package com.chana.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,15 @@ import com.chana.beans.Payment;
 import com.chana.beans.Product;
 import com.chana.beans.ProductList;
 import com.chana.beans.Shipment;
+import com.chana.exceptions.LoginException;
 import com.chana.exceptions.productExceptions.DeleteProductException;
 import com.chana.exceptions.productExceptions.PurchaseProductException;
 import com.chana.exceptions.productExceptions.UpdateProductException;
+
+import com.chana.login.LoginRequest;
+import com.chana.login.TokenManager;
 import com.chana.services.UserService;
+
 
 @RestController
 @RequestMapping("/user")
@@ -29,7 +36,20 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-
+	@Autowired
+	private com.chana.utils.LoginManager  loginManager;
+	@Autowired
+	private TokenManager tokenManager;
+	
+	
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) throws LoginException {
+		loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), loginRequest.getClientType());
+		String token = tokenManager.generageToken(loginRequest.getClientType()).toString();
+		
+		 return new ResponseEntity<>(token,HttpStatus.ACCEPTED);
+	}
+	
 	// add product
 	@PostMapping("/product")
 	public ResponseEntity<?> addProduct(@RequestBody Product product) {
