@@ -17,13 +17,13 @@ import javax.persistence.Table;
 public class Payment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@OneToOne(mappedBy = "payment")
+//	@OneToOne(mappedBy = "payment")
 	private long id;
 	@Column(name = "payment_method")
 	private String paymentMethod;
 	@Column(name = "payment_owner")
 	private String paymentOwner;
-	@ManyToMany
+//	@ManyToMany
 	@JoinColumn(name = "user_id")
 	private String userId;
 	@Column(name = "paypal_account")

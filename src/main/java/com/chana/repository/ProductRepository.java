@@ -17,13 +17,13 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 	@Query(value = "select * from products where user_id =?1 ", nativeQuery = true)
 		List<Product> getAllProductsByCustomerId(Long companyId);
 	
-	void buyProduct(Long userId, Long productId); //to do
-	void sellProduct(Long sellerId, Long productId, Long buyerId); // to do
+//	void buyProduct(Long userId, Long productId); //to do
+//	void sellProduct(Long sellerId, Long productId, Long buyerId); // to do
 	
-	List<Product> findByName(String name);
+	List<Product> findByTitle(String title);
 	List<Product> findBySellerFirstNameOrSellerLastName(String firstName, String lastName);
 	boolean existsByTitle(String title);
-	boolean existsByName(String name);
+//	boolean existsByName(String name);
 	boolean existsByIdAndAmountEquals(long id, double zero);
 	
 	@Transactional

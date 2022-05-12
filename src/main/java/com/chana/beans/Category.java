@@ -13,7 +13,6 @@ import javax.persistence.Table;
 public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@OneToMany(mappedBy = "category")
 	private long id;
 	@Column
 	private String name;

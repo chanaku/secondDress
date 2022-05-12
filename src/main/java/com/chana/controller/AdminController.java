@@ -30,11 +30,11 @@ import com.chana.exceptions.productExceptions.AddProductException;
 import com.chana.exceptions.productExceptions.DeleteProductException;
 import com.chana.exceptions.productExceptions.ProductDoesntExistsException;
 import com.chana.exceptions.productExceptions.UpdateProductException;
+import com.chana.login.LoginManager;
 import com.chana.login.LoginRequest;
 import com.chana.login.TokenManager;
 import com.chana.services.AdminService;
 import com.chana.utils.ClientType;
-import com.chana.utils.LoginManager;
 
 @RestController
 @RequestMapping("/admin")
@@ -51,7 +51,8 @@ public class AdminController {
 		this.adminService = adminService;
 	}
 	
-	@PostMapping
+	
+	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) throws LoginException{
 		loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), ClientType.ADMINISTRATOR);
 		String token = tokenManager.generageToken(ClientType.ADMINISTRATOR);
@@ -60,7 +61,7 @@ public class AdminController {
 
 	
 	// add product
-	@PostMapping
+	@PostMapping("/product/add")
 	public ResponseEntity<?> addProduct(@RequestBody Product product) {
 		try {
 			adminService.addProduct(product);
@@ -116,9 +117,9 @@ public class AdminController {
 	}
 	// get all products by name
 
-	@GetMapping("/product/{name}")
-	public ProductList getAllProductsByName(@PathVariable("name") String name) {
-		return new ProductList(adminService.getAllProductsByName(name));
+	@GetMapping("/product/{title}")
+	public ProductList getAllProductsByTitle(@PathVariable("title") String title) {
+		return new ProductList(adminService.getAllProductsByTitle(title));
 	}
 
 	// get all products by customer id
@@ -135,7 +136,7 @@ public class AdminController {
 	}
 
 	// add order
-	@PostMapping
+	@PostMapping("/order")
 	public ResponseEntity<?> addOrder(@RequestBody Order order) {
 		adminService.addOrder(order);
 		return new ResponseEntity(HttpStatus.CREATED);
@@ -179,37 +180,37 @@ public class AdminController {
 	}
 
 	// get all orders by date
-	@GetMapping("/order")
+	@GetMapping("/order/all")
 	public OrderList getAllOrdersByDate(@RequestBody Date date) {
 		return new OrderList(adminService.getOrdersByDate(date));
 	}
 
 	// get all orders by 2 dates
-	@GetMapping("/order")
+	@GetMapping("/order/allByDates")
 	public OrderList getAllOrdersByTwoDates(@RequestBody Date firstdate, Date last) {
 		return new OrderList(adminService.getOrdersByDateBetweenTwoDates(firstdate, last));
 	}
 
 	// get all orders by price
-	@GetMapping("/order")
+	@GetMapping("/order/allByPrice")
 	public OrderList getAllOrdersByPrice(@RequestBody double price) {
 		return new OrderList(adminService.getOrdersByPrice(price));
 	}
 
 	// get all orders by max price
-	@GetMapping("/order")
+	@GetMapping("/order/allByMaxPrice")
 	public OrderList getAllOrdersByMaxPrice(@RequestBody double max) {
 		return new OrderList(adminService.getOrdersByMaxPrice(max));
 	}
 
 	// get all orders by category
-	@GetMapping("/order")
-	public OrderList getAllOrdersByCategory(@RequestBody Category category) {
-		return new OrderList(adminService.findOrderByCategory(category));
-	}
+//	@GetMapping("/order")
+//	public OrderList getAllOrdersByCategory(@RequestBody Category category) {
+//		return new OrderList(adminService.findOrderByCategory(category));
+//	}
 
 	// get all payments
-	@GetMapping("/payment")
+	@GetMapping("/payment/all")
 	public PaymentList getAllPyments() {
 		return new PaymentList(adminService.getAllPayments());
 	}
@@ -227,7 +228,7 @@ public class AdminController {
 	}
 
 	// get payment by end date
-	@GetMapping("/payment")
+	@GetMapping("/payment/byDate")
 	public PaymentList getPaymentByEndDate(@PathVariable("date") Date date) {
 		return new PaymentList(adminService.getPaymentsByEndDate(date));
 	}
@@ -235,7 +236,7 @@ public class AdminController {
 	//delete 
 
 	// get all orders by 2 dates
-	@GetMapping("/payment")
+	@GetMapping("/payment/twoDates")
 	public PaymentList getAllPaymentsBetweenTwoDates(@RequestBody Date firstdate, Date last) {
 		return new PaymentList(adminService.getPaymentsBetweenTwoDates(firstdate, last));
 	}
@@ -271,19 +272,19 @@ public class AdminController {
 	}
 
 	// get all shipments by arrive date
-	@GetMapping("/shipment")
+	@GetMapping("/shipment/allArriveDate")
 	public ShipmentList getAllShipmentsArriveDate(@RequestBody Date arrive) {
 		return new ShipmentList(adminService.getShipmentByArriveDate(arrive));
 	}
 
 	// get all shipments by shipment date
-	@GetMapping("/shipment")
+	@GetMapping("/shipment/shipDate")
 	public ShipmentList getAllShipmentsByShipmentDate(@RequestBody Date arrive) {
 		return new ShipmentList(adminService.getShipmentByShipmentDate(arrive));
 	}
 
 	// get all shipments by shipment dacompany
-	@GetMapping("/shipment")
+	@GetMapping("/shipment/company")
 	public ShipmentList getAllShipmentsByShipmentCompany(@RequestBody String company) {
 		return new ShipmentList(adminService.getShipmentByShipmentCompany(company));
 	}
@@ -320,9 +321,9 @@ public class AdminController {
 		return new ResponseEntity(HttpStatus.ACCEPTED);
 	}
 	// get users by name
-	@GetMapping("/user/{name}")
-	public UserList getUsersByName(@PathVariable ("name")String name) {
-		return new UserList(adminService.getUserByName(name));
+	@GetMapping("/user/{name}{last}")
+	public UserList getUsersByName(@PathVariable ("name")String name,@PathVariable("last")String last ) {
+		return new UserList(adminService.getUserByName(name, last));
 	}
 	// get users by email
 	@GetMapping("/user/{email}")

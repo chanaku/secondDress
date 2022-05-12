@@ -1,21 +1,24 @@
-package com.chana.utils;
+package com.chana.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.chana.exceptions.LoginException;
-import com.chana.login.TokenManager;
 import com.chana.services.AdminService;
 import com.chana.services.ClientService;
 import com.chana.services.UserService;
+import com.chana.utils.ClientType;
 
 
 @Component
 public class LoginManager {
 	private final ApplicationContext context;
+	@Autowired
 	private final AdminService adminService;
-	private TokenManager tokenManager;
+	@Autowired
+	private TokenManager tokenManager ;
+	@Autowired
 	private ClientService clientService;
 	
 	@Autowired

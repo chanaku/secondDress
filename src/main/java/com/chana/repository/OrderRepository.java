@@ -12,12 +12,12 @@ import com.chana.beans.Order;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long>{
 	Order getById(Long orderId);
-	List<Order> findAllByUserId(Long orderId);
+	List<Order> findAllByBuyerId(Long buyerId);
 	List<Order> findByBuyerId(Long buyerId);
 	List<Order> findBySellerId(Long sellerId);
 	List<Order> findByOrderDate(Date date);
 	List<Order> findByOrderDateBetween(Date startDate,Date endDate);
-	List<Order> findByPrice(double price);
-	List<Order> findByPriceLessThanEqual(double max);
-	List<Order> findByCategoryId(Category category);
+	List<Order> findByTotalPrice(double price);
+	List<Order> findByTotalPriceLessThanEqual(double max);
+//	List<Order> findByCategoryId(Category category);
 }

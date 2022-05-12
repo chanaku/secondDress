@@ -9,8 +9,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
-	boolean exitsByEmailAndPassword(String email, String password);
+	boolean existsByEmailAndPassword(String email, String password);
 	User findByEmailAndPassword(String email, String password);
-	List<User> findByFirstNameOrLastName(String name);
-	List<User> findByEmaill(String email);
+	List<User> findByFirstNameOrLastName(String first, String last);
+	List<User> findByEmail(String email);
+	boolean existsByEmail(String email);
 }

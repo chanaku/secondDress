@@ -15,6 +15,7 @@ import com.chana.exceptions.ServiceException;
 import com.chana.exceptions.productExceptions.DeleteProductException;
 import com.chana.exceptions.productExceptions.PurchaseProductException;
 import com.chana.exceptions.productExceptions.UpdateProductException;
+import com.chana.repository.AdminRepository;
 import com.chana.repository.CategoryRepository;
 import com.chana.repository.OrderRepository;
 import com.chana.repository.PaymentRepository;
@@ -31,9 +32,11 @@ public class UserService extends ClientService {
 	protected PaymentRepository paymentRepository;
 	protected ProductRepository productRepository;
 	protected ShipmentRepository shipmentRepository;
+	@Autowired
 	protected UserRepository userRepository;
+	protected AdminRepository adminRepository;
 
-	long userId;
+	public static long userId;
 	
 	public long getUserId() {
 		return this.userId;
@@ -43,25 +46,32 @@ public class UserService extends ClientService {
 
 	public UserService(CategoryRepository categoryRepository, OrderRepository orderRepository,
 			PaymentRepository paymentRepository, ProductRepository productRepository,
-			ShipmentRepository shipmentRepository, UserRepository userRepository) {
+			ShipmentRepository shipmentRepository, UserRepository userRepository, AdminRepository adminRepository) {
 		super(categoryRepository, orderRepository, paymentRepository, productRepository, shipmentRepository,
-				userRepository);
+				userRepository, adminRepository);
 
 	}
+//		public User user = userRepository.findById(userId).orElse(null);
 
 	public boolean login(String email, String password) throws LoginException {
-		if (userRepository.exitsByEmailAndPassword(email, password)) {
+		if (userRepository.existsByEmailAndPassword(email, password)) {
 			userId = userRepository.findByEmailAndPassword(email, password).getId();
 			return true;
 		}
-		throw new LoginException("login failed. email or password are incorrect");
+		throw new LoginException("Login failed. email or password are incorrect");
 
+	}
+	public void addUser(User user) throws LoginException {
+		if(userRepository.existsByEmail(user.getEmail())) {
+			throw new LoginException("Register failed. email already exists");
+		}
+		userRepository.saveAndFlush(user);
 	}
 
     //to do cancel order
 
 	public void addProduct(Product product) {
-		productRepository.saveAndFlush(product);
+		productRepository.save(product);
 	}
 
 	public void deleteProduct(Long productId) throws DeleteProductException {
@@ -90,8 +100,8 @@ public class UserService extends ClientService {
 		if (productRepository.existsByIdAndAmountEquals(product.getId(), 0)) {
 			throw new PurchaseProductException("amount is not enough");
 		} else {
-
-			orderRepository.saveAndFlush(new Order(product.getSeller(), userId, product, product.getPrice(), null,
+			User user = userRepository.findById(userId).orElse(null);
+			orderRepository.saveAndFlush(new Order(product.getSeller(), user, product, product.getPrice(), null,
 					false, false, null, null));
 			productRepository.updateProductQuantity(product.getId());
 		}
@@ -142,7 +152,7 @@ public class UserService extends ClientService {
 	}
 
 	public List<Order> getAllOrdersByUserId(Long userId) {
-		return orderRepository.findAllByUserId(userId);
+		return orderRepository.findAllByBuyerId(userId);
 	}
 
 }

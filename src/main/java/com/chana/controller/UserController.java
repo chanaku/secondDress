@@ -20,6 +20,7 @@ import com.chana.beans.Payment;
 import com.chana.beans.Product;
 import com.chana.beans.ProductList;
 import com.chana.beans.Shipment;
+import com.chana.beans.User;
 import com.chana.exceptions.LoginException;
 import com.chana.exceptions.productExceptions.DeleteProductException;
 import com.chana.exceptions.productExceptions.PurchaseProductException;
@@ -37,10 +38,19 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private com.chana.utils.LoginManager  loginManager;
+	private com.chana.login.LoginManager  loginManager;
 	@Autowired
 	private TokenManager tokenManager;
 	
+	@PostMapping("/register")
+	public void registerNewUser(@RequestBody User user) {
+		try {
+			userService.addUser(user);
+		} catch (LoginException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) throws LoginException {

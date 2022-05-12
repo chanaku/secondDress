@@ -19,21 +19,27 @@ import com.chana.exceptions.productExceptions.DeleteProductException;
 import com.chana.exceptions.productExceptions.ProductDoesntExistsException;
 import com.chana.exceptions.productExceptions.ProductNameDoesntExistsException;
 import com.chana.exceptions.productExceptions.UpdateProductException;
+import com.chana.repository.AdminRepository;
 import com.chana.repository.CategoryRepository;
 import com.chana.repository.OrderRepository;
 import com.chana.repository.PaymentRepository;
 import com.chana.repository.ProductRepository;
 import com.chana.repository.ShipmentRepository;
 import com.chana.repository.UserRepository;
+import com.chana.utils.ClientType;
 
 @Service
 public class AdminService extends ClientService {
 	@Autowired
 	public AdminService(CategoryRepository categoryRepository, OrderRepository orderRepository,
 			PaymentRepository paymentRepository, ProductRepository productRepository,
-			ShipmentRepository shipmentRepository, UserRepository userRepository) {
+			ShipmentRepository shipmentRepository, UserRepository userRepository, AdminRepository adminRepository) {
 		super(categoryRepository, orderRepository, paymentRepository, productRepository, shipmentRepository,
-				userRepository);
+				userRepository, adminRepository);
+	}
+
+	public AdminService() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public boolean login(String email, String password) throws LoginException {
@@ -88,8 +94,8 @@ public class AdminService extends ClientService {
 		return productRepository.findAll();
 	}
 
-	public List<Product> getAllProductsByName(String name) {
-		return productRepository.findByName(name);
+	public List<Product> getAllProductsByTitle(String title) {
+		return productRepository.findByTitle(title);
 	}
 
 	public List<Product> getAllProductsByCustomerId(Long id) {
@@ -136,16 +142,16 @@ public class AdminService extends ClientService {
 	}
 
 	public List<Order> getOrdersByPrice(double price) {
-		return orderRepository.findByPrice(price);
+		return orderRepository.findByTotalPrice(price);
 	}
 
 	public List<Order> getOrdersByMaxPrice(double max) {
-		return orderRepository.findByPriceLessThanEqual(max);
+		return orderRepository.findByTotalPriceLessThanEqual(max);
 	}
 
-	public List<Order> findOrderByCategory(Category category) {
-		return orderRepository.findByCategoryId(category);
-	}
+//	public List<Order> findOrderByCategory(Category category) {
+//		return orderRepository.findByCategoryId(category);
+//	}
 
 	public List<Payment> getAllPayments() {
 		return paymentRepository.findAll();
@@ -208,7 +214,7 @@ public class AdminService extends ClientService {
 	}
 
 	public void addUser(User user) {
-		userRepository.saveAndFlush(user);
+		userRepository.save(user);
 	}
 
 	public void updateUser(User user) {
@@ -219,12 +225,19 @@ public class AdminService extends ClientService {
 		userRepository.deleteById(userId);
 	}
 
-	public List<User> getUserByName(String name) {
-		return userRepository.findByFirstNameOrLastName(name);
+	public List<User> getUserByName(String fname, String last) {
+		return userRepository.findByFirstNameOrLastName(fname, last);
 	}
 
 	public List<User> getUserByEmail(String email) {
-		return userRepository.findByEmaill(email);
+		return userRepository.findByEmail(email);
+	}
+	public ClientType findClientType(String email, String password) {
+			if(adminRepository.existsByEmailAndPassword(email, password)) {
+				return ClientType.ADMINISTRATOR;
+			}
+		
+		return ClientType.USER;
 	}
 
 }

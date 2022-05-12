@@ -1,16 +1,22 @@
 package com.chana.login;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.chana.utils.ClientType;
 
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
 public class TokenManager {
-	@Autowired
-	private Map<String, TokenInfo> tokens;
+	
+	private Map<String, TokenInfo> tokens= new HashMap<>();
 	
 	public boolean isTokenExists(String token) {
 		return tokens.get(token) != null;

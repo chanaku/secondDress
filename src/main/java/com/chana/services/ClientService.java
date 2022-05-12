@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.chana.exceptions.LoginException;
 import com.chana.exceptions.ServiceException;
+import com.chana.repository.AdminRepository;
 import com.chana.repository.CategoryRepository;
 import com.chana.repository.OrderRepository;
 import com.chana.repository.PaymentRepository;
@@ -19,17 +20,19 @@ public class ClientService {
 	ProductRepository productRepository;
 	ShipmentRepository shipmentRepository;
 	UserRepository userRepository;
+	AdminRepository adminRepository;
 	
 	@Autowired
 	public ClientService(CategoryRepository categoryRepository, OrderRepository orderRepository,
 			PaymentRepository paymentRepository, ProductRepository productRepository,
-			ShipmentRepository shipmentRepository,UserRepository userRepository) {
+			ShipmentRepository shipmentRepository,UserRepository userRepository,AdminRepository adminRepository) {
 		this.categoryRepository = categoryRepository;
 		this.orderRepository = orderRepository;
 		this.paymentRepository = paymentRepository;
 		this.productRepository = productRepository;
 		this.shipmentRepository = shipmentRepository;
 		this.userRepository=userRepository;
+		this.adminRepository=adminRepository;
 	}
 	public ClientService() {
 	}

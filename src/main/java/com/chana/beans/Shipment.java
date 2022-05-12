@@ -2,8 +2,12 @@ package com.chana.beans;
 
 import java.sql.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +22,7 @@ import javax.persistence.Table;
 public class Shipment {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@OneToOne(mappedBy = "shipment")
+//	@OneToOne(mappedBy = "shipment")
 	private long id;
 	@Column(name="shipment_date")
 	private java.sql.Date shipmentDate;
@@ -27,22 +31,27 @@ public class Shipment {
 	@Column(name="shipment_company")
 	private String shipmentCompany;
 	@Column(name="tracking_number")
-	private String TrackingNumber;
-	@OneToMany
-	@JoinColumn(name="seller_user_id")
+	private String trackingNumber;
+//	@OneToMany
+	@OneToOne(targetEntity = User.class,  
+		    cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Access(AccessType.PROPERTY)
+	@JoinColumn(name="seller_id")
 	private User seller;
 	@ManyToOne
 	@JoinColumn(name="buyer_user_id")
 	private User buyer;
 	@Column(name="signed_by")
 	private String signedBy;
+	
+	
 	public Shipment(long id, Date shipmentDate, Date arriveDate, String shipmentCompany, String trackingNumber,
 			User seller, User buyer, String signedBy) {
 		this.id = id;
 		this.shipmentDate = shipmentDate;
 		this.arriveDate = arriveDate;
 		this.shipmentCompany = shipmentCompany;
-		TrackingNumber = trackingNumber;
+		this.trackingNumber = trackingNumber;
 		this.seller = seller;
 		this.buyer = buyer;
 		this.signedBy = signedBy;
@@ -74,10 +83,10 @@ public class Shipment {
 		this.shipmentCompany = shipmentCompany;
 	}
 	public String getTrackingNumber() {
-		return TrackingNumber;
+		return trackingNumber;
 	}
 	public void setTrackingNumber(String trackingNumber) {
-		TrackingNumber = trackingNumber;
+		this.trackingNumber = trackingNumber;
 	}
 	public User getSeller() {
 		return seller;
@@ -100,7 +109,7 @@ public class Shipment {
 	@Override
 	public String toString() {
 		return "Shipment [id=" + id + ", shipmentDate=" + shipmentDate + ", arriveDate=" + arriveDate
-				+ ", shipmentCompany=" + shipmentCompany + ", TrackingNumber=" + TrackingNumber + ", seller=" + seller
+				+ ", shipmentCompany=" + shipmentCompany + ", trackingNumber=" + trackingNumber + ", seller=" + seller
 				+ ", buyer=" + buyer + ", signedBy=" + signedBy + "]";
 	}
 	

@@ -3,8 +3,12 @@ package com.chana.beans;
 import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,18 +27,23 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
-	@OneToMany
+	@OneToOne(targetEntity = User.class,  
+		    cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="seller_id")
 	private User seller;
 	@ManyToOne
 	@JoinColumn(name="buyer_id")
-	private long buyerId;
-	@ManyToMany
+	private User buyerId;
+	@ManyToOne(targetEntity = Product.class,  
+    cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Access(AccessType.PROPERTY)
 	@JoinColumn(name = "product_id")
 	private Product product;
 	@Column(name="total_price")
 	private double totalPrice;
-	@OneToOne
+	@OneToOne(targetEntity = Payment.class,  
+		    cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Access(AccessType.PROPERTY)
 	@JoinColumn(name="payment_id")
 	private Payment payment;
 	@Column(name="is_package_received")
@@ -49,7 +58,7 @@ public class Order {
 	
 	
 	
-	public Order(long id, User seller, long buyerId, Product product, long totalPrice, Payment payment,
+	public Order(long id, User seller, User buyerId, Product product, long totalPrice, Payment payment,
 			boolean isPackageRecieved, boolean isComplete, Date orderDate, Shipment shipment) {
 		this.id = id;
 		this.seller = seller;
@@ -63,7 +72,7 @@ public class Order {
 		this.shipment = shipment;
 	}
 	
-	public Order(User seller, long buyerId, Product product, double totalPrice, Payment payment, boolean isPackageRecieved,
+	public Order(User seller, User buyerId, Product product, double totalPrice, Payment payment, boolean isPackageRecieved,
 			boolean isComplete, Date orderDate, Shipment shipment) {
 		this.seller = seller;
 		this.buyerId = buyerId;
@@ -89,7 +98,7 @@ public class Order {
 	public void setSeller(User seller) {
 		this.seller = seller;
 	}
-	public long getBuyer() {
+	public User getBuyer() {
 		return buyerId;
 	}
 	public void setBuyer(User buyer) {
