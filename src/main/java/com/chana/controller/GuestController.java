@@ -1,6 +1,7 @@
 package com.chana.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import com.chana.exceptions.LoginException;
 import com.chana.login.TokenManager;
 import com.chana.services.UserService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/guest")
 public class GuestController {
@@ -24,7 +26,7 @@ public class GuestController {
 	private TokenManager tokenManager;
 	
 	@PostMapping("/register")
-	public void registerNewUser(@RequestBody User user) {
+	public void registerNewUser( User user) {
 		try {
 			userService.addUser(user);
 		} catch (LoginException e) {
